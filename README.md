@@ -20,4 +20,5 @@ kernel=C:\\Users\\main\\vmlinux
     - Arch Based Distros: `pacman -S base-devel bc python pahole`
     - Alpine: `apk add make gcc libc-dev flex bison linux-headers libressl-dev elfutils-dev python3 perl pahole`
     - Fedora: `dnf install make gcc flex bison openssl openssl-devel bc elfutils-devel diffutils dwarves`
-2. ...
+2. Clone the repo `git clone https://github.com/bioluks/WSL2-Linux-Kernel-NTFS.git`
+3. In the directory, do `make KCONFIG_CONFIG=./.config`
