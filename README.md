@@ -1,46 +1,16 @@
-# Introduction
+# Why this Exists, What it is
 
-The [WSL2-Linux-Kernel][wsl2-kernel] repo contains the kernel source code and
-configuration files for the [WSL2][about-wsl2] kernel.
+Microsoft disables the NTFS functionality on purpose on [their WSL Kernel](https://github.com/microsoft/WSL2-Linux-Kernel) releases. This is my custom kernel where I only enable NTFS functionality and touch nothing else. Made for people who want to mount NTFS formatted devices in their WSL Container/Distro without the extra steps needed to compile their own kernels. Also solves issues like: [missing NTFS3 kernel modules](https://github.com/microsoft/WSL/issues/8564), [etc](https://github.com/microsoft/WSL/issues?q=ntfs)
 
-# Reporting Bugs
+# Installation (more like _Replacing the Microsoft Kernel with Yours_)
+1. If you launched your WSL distro(s) or instance(s), shut them down (all at once) by entering `wsl --shutdown` in PowerShell. If you want to shut down a specific Distro do that by entering `wsl -t DISTRO-NAME`. Get the distro names with `wsl --list --verbose`.
+2. Download my latest kernel from the [releases](), or [compile it yourself]().
+3. Put the file wherever you want on your Windows Host (the file has to stay there as long as you use that kernel, without the file in place your WSL2 distros won't launch).
+4. Create a file called `.wslconfig` in your user home directory (generally `C:\Users\<username>` or aka `%HOMEDRIVE%\%HOMEPATH%`, in a simpler form `%UserProfile%`) with the following contents, my kernel file name is **'vmlinux'** and I placed it in `C:\Users\<myuser>` (the default kernel filename is 'vmlinux' if you don't change it, also the double backslashes are for escaping characters, so they are needed):
+```
+[wsl2]
+kernel=C:\\Users\\main\\vmlinux
+```
+5. Launch your (default) distro with the new kernel by typing `wsl` or a specific one with `wsl -d DISTRO-NAME`.
 
-If you discover an issue relating to WSL or the WSL2 kernel, please report it on
-the [WSL GitHub project][wsl-issue]. It is not possible to report issues on the
-[WSL2-Linux-Kernel][wsl2-kernel] project.
-
-If you're able to determine that the bug is present in the upstream Linux
-kernel, you may want to work directly with the upstream developers. Please note
-that there are separate processes for reporting a [normal bug][normal-bug] and
-a [security bug][security-bug].
-
-# Feature Requests
-
-Is there a missing feature that you'd like to see? Please request it on the
-[WSL GitHub project][wsl-issue].
-
-If you're able and interested in contributing kernel code for your feature
-request, we encourage you to [submit the change upstream][submit-patch].
-
-# Build Instructions
-
-Instructions for building an x86_64 WSL2 kernel with an Ubuntu distribution are
-as follows:
-
-1. Install the build dependencies:  
-   `$ sudo apt install build-essential flex bison dwarves libssl-dev libelf-dev`
-2. Build the kernel using the WSL2 kernel configuration:  
-   `$ make KCONFIG_CONFIG=Microsoft/config-wsl`
-
-# Install Instructions
-
-Please see the documentation on the [.wslconfig configuration
-file][install-inst] for information on using a custom built kernel.
-
-[wsl2-kernel]:  https://github.com/microsoft/WSL2-Linux-Kernel
-[about-wsl2]:   https://docs.microsoft.com/en-us/windows/wsl/about#what-is-wsl-2
-[wsl-issue]:    https://github.com/microsoft/WSL/issues/new/choose
-[normal-bug]:   https://www.kernel.org/doc/html/latest/admin-guide/bug-hunting.html#reporting-the-bug
-[security-bug]: https://www.kernel.org/doc/html/latest/admin-guide/security-bugs.html
-[submit-patch]: https://www.kernel.org/doc/html/latest/process/submitting-patches.html
-[install-inst]: https://docs.microsoft.com/en-us/windows/wsl/wsl-config#configure-global-options-with-wslconfig
+# How to Compile
